@@ -146,7 +146,7 @@ def transcribe_video(client, video_path: Path, folder: Path, job_id: str) -> str
                    message=f"အသံစာသား ပြောင်းနေပါတယ် ({index}/{len(chunks)})")
         with chunk.open("rb") as audio:
             result = client.audio.transcriptions.create(
-                model=os.getenv("OPENAI_TRANSCRIPTION_MODEL", "whisper-1"),
+                model=os.getenv("OPENAI_TRANSCRIPTION_MODEL", "gpt-transcribe"),
                 file=audio,
                 response_format="text"
             )
