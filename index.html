@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nova Recap AI</title>
+<title>SHEIN Recap</title>
 <style>
 :root{--bg:#090e1c;--panel:#121b30;--muted:#9aa8c2;--line:#2a3856;--accent:#8b5cf6}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#282052 0,#090e1c 44%);color:#eef2ff;font:15px system-ui,sans-serif}
@@ -17,6 +17,22 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 10px} .hero p{colo
 .links a{display:inline-block;color:#c4b5fd;margin:8px 12px 0 0;word-break:break-all}.steps{display:grid;gap:14px}.step{display:flex;gap:12px}.num{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#2b2350;color:#c4b5fd;font-weight:800;flex:none}.step b{display:block;font-size:14px;margin-bottom:3px}.step small{color:var(--muted);line-height:1.5}
 .notice{margin-top:18px;border:1px solid #57452c;background:#2b2116;color:#fcd9a5;border-radius:11px;padding:12px;font-size:12px;line-height:1.55}footer{color:#73819c;font-size:12px;text-align:center;margin-top:25px}
 @media(max-width:760px){.grid{grid-template-columns:1fr}.panel{padding:17px}}
+
+/* SHEIN Recap visual refresh */
+:root{--bg:#080914;--panel:rgba(20,22,43,.78);--muted:#a8abc5;--line:rgba(167,139,250,.22);--accent:#a855f7}
+body{background:radial-gradient(ellipse at 12% 8%,rgba(168,85,247,.24),transparent 36%),radial-gradient(ellipse at 90% 18%,rgba(34,211,238,.13),transparent 32%),linear-gradient(145deg,#070813,#101127 58%,#080914);background-attachment:fixed}
+.wrap{max-width:1120px;padding-top:30px}
+.logo{letter-spacing:.08em;text-shadow:0 0 24px rgba(168,85,247,.55)}
+.logo span{color:#67e8f9}
+.pill{backdrop-filter:blur(16px);background:rgba(168,85,247,.09);border-color:rgba(196,181,253,.35)}
+.panel{background:linear-gradient(145deg,rgba(28,30,58,.88),rgba(14,17,37,.78));backdrop-filter:blur(22px);border:1px solid rgba(167,139,250,.25);box-shadow:0 22px 70px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.05);transition:transform .25s,border-color .25s}
+.panel:hover{border-color:rgba(103,232,249,.38);transform:translateY(-2px)}
+button,.btn{background:linear-gradient(100deg,#9333ea,#6366f1 58%,#0891b2);box-shadow:0 10px 28px rgba(124,58,237,.28);border:0}
+input,select,textarea{background:rgba(7,9,25,.72)!important;border:1px solid rgba(167,139,250,.28)!important;color:#f5f3ff!important}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#67e8f9!important;box-shadow:0 0 0 3px rgba(103,232,249,.12)}
+h1{letter-spacing:-.035em;text-shadow:0 8px 35px rgba(168,85,247,.22)}
+@media(max-width:700px){.wrap{padding:18px 12px 40px}.panel{padding:17px;border-radius:17px}}
+@media(prefers-reduced-motion:reduce){.panel{transition:none}.panel:hover{transform:none}}
 </style></head>
 <body><main class="wrap">
 <header class="top"><div class="logo">✦ NOVA <span>RECAP AI</span></div><div class="pill">BETA · AI WORKSPACE</div></header>
@@ -42,7 +58,7 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 10px} .hero p{colo
 <div class="step"><div class="num">3</div><div><b>မြန်မာ Recap ရေးပါ</b><small>ဇာတ်လမ်းအချက်အလက်ကို အခြေခံပြီး သဘာဝကျတဲ့ မြန်မာစကားပြောဟန်နဲ့ ရေးပါမယ်။</small></div></div>
 <div class="step"><div class="num">4</div><div><b>AI Voice နဲ့ Subtitle</b><small>အမျိုးသား / အမျိုးသမီး အသံနဲ့ subtitle ဖန်တီးပါမယ်။</small></div></div>
 <div class="step"><div class="num">5</div><div><b>MP4 ထုတ်ပါ</b><small>မူရင်း Video နဲ့ Recap အသံကို ပေါင်းစပ်ပါမယ်။</small></div></div>
-</div></aside></div><footer>Nova Recap AI · AI-powered Burmese recap workspace</footer></main>
+</div></aside></div><footer>SHEIN Recap · AI-powered Burmese recap workspace</footer></main>
 <script>
 let sourceMode='url', pollHandle=null;
 const $=id=>document.getElementById(id);
