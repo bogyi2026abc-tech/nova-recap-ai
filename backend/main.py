@@ -459,7 +459,7 @@ async def blur_video_upload(
         await file.close()
     try:
         probe = subprocess.run([FFMPEG, "-i", str(source)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=60)
-        match = re.search(r"Video:.*?(\\d{2,5})x(\\d{2,5})", probe.stderr, re.S)
+        match = re.search(r"Video:.*?(\d{2,5})x(\d{2,5})", probe.stderr, re.S)
         if not match: raise RuntimeError("Video အရွယ်အစားကို မဖတ်နိုင်ပါ။")
         vw, vh = int(match.group(1)), int(match.group(2))
         rx, ry = max(0,min(vw-2,int(x*vw))), max(0,min(vh-2,int(y*vh)))
