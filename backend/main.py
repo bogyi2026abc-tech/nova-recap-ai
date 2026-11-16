@@ -417,6 +417,72 @@ async def upload_video(
     return job
 
 
+
+@app.post("/api/blur/upload")
+async def blur_video_upload(
+    file: UploadFile = File(...),
+    region_json: str = Form(...),
+    start_time: float = Form(0),
+    end_time: float = Form(...),
+    strength: int = Form(12),
+    mode: str = Form("blur")
+):
+    """Apply a selected time-bounded blur or mosaic rectangle to an uploaded video."""
+    extension = Path(file.filename or "").suffix.lower()
+    if extension not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail="MP4, MOV, MKV, WEBM ဖိုင်များသာ လက်ခံပါတယ်။")
+    if start_time < 0 or end_time <= start_time:
+        raise HTTPException(status_code=400, detail="စ/ဆုံး အချိန် မမှန်ပါ။")
+    if not 2 <= strength <= 30 or mode not in {"blur", "mosaic"}:
+        raise HTTPException(status_code=400, detail="Blur setting မမှန်ပါ။")
+    try:
+        region = json.loads(region_json)
+        x, y, w, h = [float(region[k]) for k in ("x", "y", "w", "h")]
+    except Exception:
+        raise HTTPException(status_code=400, detail="ဝါးမယ့်နေရာကို မှန်ကန်စွာ ရွေးပါ။")
+    if any(v < 0 or v > 1 for v in (x, y, w, h)) or w <= 0 or h <= 0 or x+w > 1.001 or y+h > 1.001:
+        raise HTTPException(status_code=400, detail="ရွေးထားတဲ့ နေရာအကျယ်အဝန်း မမှန်ပါ။")
+    job_id = str(uuid4())
+    source = UPLOAD_DIR / f"{job_id}{extension}"
+    output = OUTPUT_DIR / f"{job_id}_blurred.mp4"
+    size = 0
+    try:
+        with source.open("wb") as out:
+            while True:
+                chunk = await file.read(1024 * 1024)
+                if not chunk: break
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    raise HTTPException(status_code=413, detail="Video အများဆုံး 500 MB အထိသာ တင်နိုင်ပါတယ်။")
+                out.write(chunk)
+    finally:
+        await file.close()
+    try:
+        probe = subprocess.run([FFMPEG, "-i", str(source)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=60)
+        match = re.search(r"Video:.*?(\\d{2,5})x(\\d{2,5})", probe.stderr, re.S)
+        if not match: raise RuntimeError("Video အရွယ်အစားကို မဖတ်နိုင်ပါ။")
+        vw, vh = int(match.group(1)), int(match.group(2))
+        rx, ry = max(0,min(vw-2,int(x*vw))), max(0,min(vh-2,int(y*vh)))
+        rw, rh = max(2,min(vw-rx,int(w*vw))), max(2,min(vh-ry,int(h*vh)))
+        rx, ry, rw, rh = rx//2*2, ry//2*2, max(2,rw//2*2), max(2,rh//2*2)
+        if mode == "blur":
+            effect = f"boxblur={max(2,strength)}:2"
+        else:
+            block=max(4,strength*2)
+            effect=f"scale=iw/{block}:ih/{block}:flags=neighbor,scale={rw}:{rh}:flags=neighbor"
+        enable=f"between(t,{start_time:.3f},{end_time:.3f})"
+        graph=f"[0:v]split[base][patch];[patch]crop={rw}:{rh}:{rx}:{ry},{effect}[fx];[base][fx]overlay={rx}:{ry}:enable='{enable}'[vout]"
+        run_ffmpeg(["-y","-i",str(source),"-filter_complex",graph,"-map","[vout]","-map","0:a?","-c:v","libx264","-preset","veryfast","-crf","23","-c:a","aac","-b:a","128k","-movflags","+faststart",str(output)],timeout=3600)
+        return {"status":"completed","file_url":f"/files/{output.name}"}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        output.unlink(missing_ok=True)
+        raise HTTPException(status_code=500, detail=str(exc))
+    finally:
+        source.unlink(missing_ok=True)
+
+
 @app.get("/api/jobs/{job_id}")
 def get_job(job_id: str):
     if job_id not in jobs:
