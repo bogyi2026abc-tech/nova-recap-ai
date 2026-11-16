@@ -5,3 +5,4 @@ openai>=2.0
 python-multipart>=0.0.20
 yt-dlp[default]>=2025.1.15
 imageio-ffmpeg>=0.5.1
+deno>=2.3
