@@ -111,6 +111,8 @@ def download_youtube(url: str, destination: Path) -> Path:
         "merge_output_format": "mp4",
         "retries": 2,
         "socket_timeout": 30,
+        "extractor_retries": 3,
+        "extractor_args": {"youtube": {"player_client": ["web", "mweb", "tv"]}},
     }
     with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(url, download=True)
