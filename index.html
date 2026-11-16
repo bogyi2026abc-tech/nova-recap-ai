@@ -18,6 +18,8 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 10px} .hero p{colo
 .notice{margin-top:18px;border:1px solid #57452c;background:#2b2116;color:#fcd9a5;border-radius:11px;padding:12px;font-size:12px;line-height:1.55}footer{color:#73819c;font-size:12px;text-align:center;margin-top:25px}
 @media(max-width:760px){.grid{grid-template-columns:1fr}.panel{padding:17px}}
 
+/* Blur editor */
+.blur-panel{grid-column:1/-1}.preview-wrap{position:relative;background:#050611;border-radius:14px;overflow:hidden;max-height:560px;display:flex;justify-content:center;align-items:center;touch-action:pan-y}#blurVideo{display:block;width:100%;max-height:560px;object-fit:contain}#blurCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.secondary{background:#252b48;box-shadow:none;border:1px solid #485274}
 /* SHEIN Recap visual refresh */
 :root{--bg:#080914;--panel:rgba(20,22,43,.78);--muted:#a8abc5;--line:rgba(167,139,250,.22);--accent:#a855f7}
 body{background:radial-gradient(ellipse at 12% 8%,rgba(168,85,247,.24),transparent 36%),radial-gradient(ellipse at 90% 18%,rgba(34,211,238,.13),transparent 32%),linear-gradient(145deg,#070813,#101127 58%,#080914);background-attachment:fixed}
@@ -35,7 +37,7 @@ h1{letter-spacing:-.035em;text-shadow:0 8px 35px rgba(168,85,247,.22)}
 @media(prefers-reduced-motion:reduce){.panel{transition:none}.panel:hover{transform:none}}
 </style></head>
 <body><main class="wrap">
-<header class="top"><div class="logo">✦ NOVA <span>RECAP AI</span></div><div class="pill">BETA · AI WORKSPACE</div></header>
+<header class="top"><div class="logo">✦ SHEIN <span>RECAP</span></div><div class="pill">BETA · AI WORKSPACE</div></header>
 <section class="hero"><h1>မြန်မာ Recap ကို<br><span style="color:#a78bfa">အလိုအလျောက် ဖန်တီးပါ။</span></h1><p>YouTube Link သို့မဟုတ် ဖုန်းထဲက Video ကိုထည့်ပြီး မြန်မာဇာတ်ကြောင်း၊ AI အသံ၊ Subtitle နဲ့ MP4 ကို ဖန်တီးနိုင်ပါတယ်။</p></section>
 <div class="grid"><section class="panel">
 <h2>🎬 Recap အသစ်ဖန်တီးမယ်</h2>
@@ -58,9 +60,22 @@ h1{letter-spacing:-.035em;text-shadow:0 8px 35px rgba(168,85,247,.22)}
 <div class="step"><div class="num">3</div><div><b>မြန်မာ Recap ရေးပါ</b><small>ဇာတ်လမ်းအချက်အလက်ကို အခြေခံပြီး သဘာဝကျတဲ့ မြန်မာစကားပြောဟန်နဲ့ ရေးပါမယ်။</small></div></div>
 <div class="step"><div class="num">4</div><div><b>AI Voice နဲ့ Subtitle</b><small>အမျိုးသား / အမျိုးသမီး အသံနဲ့ subtitle ဖန်တီးပါမယ်။</small></div></div>
 <div class="step"><div class="num">5</div><div><b>MP4 ထုတ်ပါ</b><small>မူရင်း Video နဲ့ Recap အသံကို ပေါင်းစပ်ပါမယ်။</small></div></div>
-</div></aside></div><footer>SHEIN Recap · AI-powered Burmese recap workspace</footer></main>
+</div></aside></div>
+<section class="panel blur-panel" id="blurStudio">
+<h2>🪄 Video Blur / Mosaic Studio</h2>
+<p class="hint">Video ကိုရွေးပြီး ဝါးချင်တဲ့နေရာကို အပေါ်မှာ လက်နဲ့ဆွဲရွေးပါ။ အချိန်အပိုင်းအခြားနဲ့ Blur အားကိုလည်း ချိန်နိုင်ပါတယ်။</p>
+<div class="field"><label for="blurFile">ဝါးဖျောက်မယ့် Video</label><input id="blurFile" type="file" accept="video/*"></div>
+<div class="preview-wrap" id="previewWrap"><video id="blurVideo" controls playsinline></video><canvas id="blurCanvas"></canvas></div>
+<div class="hint" id="regionHint">Video ထဲမှာ ဝါးချင်တဲ့နေရာကို လက်နဲ့ဆွဲရွေးပါ။</div>
+<div class="field"><label>Blur ပုံစံ</label><div class="choices"><label class="choice"><input type="radio" name="blurMode" value="blur" checked><span>ဝါးဝါး (Blur)</span></label><label class="choice"><input type="radio" name="blurMode" value="mosaic"><span>အကွက် (Mosaic)</span></label></div></div>
+<div class="field"><label for="blurStrength">ဝါးအား: <b id="blurStrengthVal">12</b></label><input id="blurStrength" type="range" min="2" max="30" value="12" style="width:100%"></div>
+<div class="field two"><div><label for="blurStart">စမယ့်အချိန် (စက္ကန့်)</label><input id="blurStart" type="number" min="0" step=".1" value="0"></div><div><label for="blurEnd">ဆုံးမယ့်အချိန် (စက္ကန့်)</label><input id="blurEnd" type="number" min="0" step=".1" value="30"></div></div>
+<button type="button" id="clearRegion" class="secondary">ရွေးထားတာ ဖျက်မယ်</button>
+<div style="height:10px"></div><button type="button" id="applyBlur">Blur ထည့်ပြီး Video ထုတ်မယ် →</button>
+<div class="status" id="blurStatus"><div id="blurStatusText"></div><div class="links" id="blurLinks"></div></div>
+</section><footer>SHEIN Recap · AI-powered Burmese recap workspace</footer></main>
 <script>
-let sourceMode='url', pollHandle=null;
+let sourceMode='url', pollHandle=null, blurRegion=null, blurObjectUrl=null;
 const $=id=>document.getElementById(id);
 $('tabUrl').onclick=()=>setMode('url'); $('tabFile').onclick=()=>setMode('file');
 function setMode(mode){sourceMode=mode;$('tabUrl').classList.toggle('active',mode==='url');$('tabFile').classList.toggle('active',mode==='file');$('urlField').style.display=mode==='url'?'block':'none';$('fileField').style.display=mode==='file'?'block':'none';}
@@ -100,4 +115,28 @@ async function poll(id){
  };
  await check();pollHandle=setInterval(check,4000);
 }
+
+const bv=$('blurVideo'), bc=$('blurCanvas'), bctx=bc.getContext('2d');
+$('blurFile').onchange=()=>{const f=$('blurFile').files[0];if(!f)return;if(blurObjectUrl)URL.revokeObjectURL(blurObjectUrl);blurObjectUrl=URL.createObjectURL(f);bv.src=blurObjectUrl;blurRegion=null;$('regionHint').textContent='Video ကိုဖွင့်ပြီး ဝါးချင်တဲ့နေရာကို ဆွဲရွေးပါ။';};
+function sizeBlurCanvas(){const r=bv.getBoundingClientRect();if(!r.width||!r.height)return;const d=window.devicePixelRatio||1;bc.width=Math.round(r.width*d);bc.height=Math.round(r.height*d);bctx.setTransform(d,0,0,d,0,0);drawBlurRegion();}
+function drawBlurRegion(){const r=bc.getBoundingClientRect();bctx.clearRect(0,0,r.width,r.height);if(!blurRegion)return;bctx.fillStyle='rgba(168,85,247,.20)';bctx.strokeStyle='#67e8f9';bctx.lineWidth=2;bctx.setLineDash([7,4]);bctx.fillRect(blurRegion.x*r.width,blurRegion.y*r.height,blurRegion.w*r.width,blurRegion.h*r.height);bctx.strokeRect(blurRegion.x*r.width,blurRegion.y*r.height,blurRegion.w*r.width,blurRegion.h*r.height);bctx.setLineDash([]);}
+let dragStart=null;
+bc.addEventListener('pointerdown',e=>{if(!bv.src)return;const r=bc.getBoundingClientRect();dragStart={x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};bc.setPointerCapture(e.pointerId);blurRegion={...dragStart,w:0,h:0};drawBlurRegion();});
+bc.addEventListener('pointermove',e=>{if(!dragStart)return;const r=bc.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;blurRegion={x:Math.max(0,Math.min(dragStart.x,x)),y:Math.max(0,Math.min(dragStart.y,y)),w:Math.min(1,Math.abs(x-dragStart.x)),h:Math.min(1,Math.abs(y-dragStart.y))};drawBlurRegion();});
+bc.addEventListener('pointerup',()=>{dragStart=null;if(blurRegion&&blurRegion.w>.01&&blurRegion.h>.01)$('regionHint').textContent='နေရာရွေးပြီးပါပြီ။ အချိန်နဲ့ Blur အားကို ချိန်နိုင်ပါပြီ။';});
+bv.addEventListener('loadedmetadata',()=>{$('blurEnd').value=Math.ceil(bv.duration||30);requestAnimationFrame(sizeBlurCanvas);});
+window.addEventListener('resize',sizeBlurCanvas);
+$('clearRegion').onclick=()=>{blurRegion=null;drawBlurRegion();$('regionHint').textContent='ရွေးထားတဲ့နေရာကို ဖျက်ပြီးပါပြီ။';};
+$('blurStrength').oninput=()=>{$('blurStrengthVal').textContent=$('blurStrength').value;};
+$('applyBlur').onclick=async()=>{
+ const f=$('blurFile').files[0];if(!f){$('blurStatus').style.display='block';$('blurStatusText').textContent='Video ဖိုင်ရွေးပေးပါ။';return;}
+ if(!blurRegion||blurRegion.w<.01||blurRegion.h<.01){$('blurStatus').style.display='block';$('blurStatusText').textContent='ဝါးချင်တဲ့နေရာကို Video ပေါ်မှာ ဆွဲရွေးပေးပါ။';return;}
+ const start=Number($('blurStart').value),end=Number($('blurEnd').value);
+ if(start<0||end<=start||end>(bv.duration||Infinity)+.1){$('blurStatus').style.display='block';$('blurStatusText').textContent='စ/ဆုံး အချိန်ကို မှန်ကန်အောင် ထည့်ပါ။';return;}
+ const fd=new FormData();fd.append('file',f);fd.append('region_json',JSON.stringify(blurRegion));fd.append('start_time',String(start));fd.append('end_time',String(end));fd.append('strength',$('blurStrength').value);fd.append('mode',document.querySelector('input[name="blurMode"]:checked').value);
+ $('blurStatus').style.display='block';$('blurStatusText').textContent='Blur ထည့်နေပါတယ်… Video အရှည်ပေါ်မူတည်ပြီး အချိန်ယူနိုင်ပါတယ်။';$('blurLinks').innerHTML='';$('applyBlur').disabled=true;
+ try{const res=await fetch('/api/blur/upload',{method:'POST',body:fd});const data=await res.json();if(!res.ok)throw new Error(data.detail||'Blur မလုပ်နိုင်ပါ။');$('blurStatusText').textContent='ပြီးပါပြီ။';$('blurLinks').innerHTML='<a target="_blank" rel="noopener" href="'+data.file_url+'">⬇ Blur ထည့်ပြီး Video ကို Download လုပ်မယ်</a>';}
+ catch(err){$('blurStatusText').textContent='မအောင်မြင်ပါ: '+err.message;}
+ finally{$('applyBlur').disabled=false;}
+};
 </script></body></html>
