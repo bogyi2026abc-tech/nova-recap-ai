@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nova Recap AI</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--muted:#91a0bb;--line:#26334f;--accent:#8b5cf6;--cyan:#22d3ee}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#22204c 0,#0b1020 42%);color:#eef2ff;font:15px system-ui,sans-serif}
+.wrap{max-width:1040px;margin:auto;padding:28px 18px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:30px}
+.logo{font-weight:800;font-size:22px;letter-spacing:.3px}.logo span{color:#a78bfa}.pill{border:1px solid #43366c;color:#c4b5fd;border-radius:99px;padding:7px 12px;font-size:12px}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.08;margin:0 0 12px}.hero p{color:var(--muted);max-width:650px;line-height:1.65;margin:0 0 25px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.panel{background:rgba(18,26,46,.94);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 16px 50px #0003}
+h2{font-size:17px;margin:0 0 18px}.field{margin-bottom:18px}label{display:block;font-size:13px;color:#cbd5e1;margin-bottom:8px}
+input[type=url],select{width:100%;background:#0c1427;border:1px solid #33415f;border-radius:12px;padding:13px;color:#fff;outline:none}
+input:focus,select:focus{border-color:var(--accent)}.hint{font-size:12px;color:var(--muted);margin-top:7px}
+.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice span{display:block;border:1px solid #33415f;background:#0c1427;border-radius:11px;padding:10px 13px;color:#cbd5e1;cursor:pointer;font-size:13px}
+.choice input:checked+span{border-color:#a78bfa;background:#34245d;color:#fff}
+button{border:0;border-radius:12px;background:linear-gradient(100deg,#7c3aed,#4f46e5);color:white;font-weight:750;padding:14px 18px;width:100%;cursor:pointer;font-size:15px}
+button:disabled{opacity:.5;cursor:not-allowed}.steps{display:grid;gap:13px}.step{display:flex;gap:12px;align-items:flex-start}.num{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#2b2350;color:#c4b5fd;font-weight:800;flex:none}.step b{display:block;font-size:14px;margin-bottom:3px}.step small{color:var(--muted);line-height:1.5}
+.notice{margin-top:18px;border:1px solid #57452c;background:#2b2116;color:#fcd9a5;border-radius:12px;padding:12px;font-size:12px;line-height:1.55}
+.status{display:none;margin-top:15px;border:1px solid #35516b;background:#10283a;border-radius:12px;padding:13px;color:#bae6fd;font-size:13px}
+footer{color:#73819c;font-size:12px;text-align:center;margin-top:28px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding-top:18px}.panel{padding:18px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div class="logo">✦ NOVA <span>RECAP AI</span></div><div class="pill">BETA · VERSION 1.0</div></header>
+<section class="hero"><h1>သင့် Recap ကို<br><span style="color:#a78bfa">တစ်နေရာတည်းမှာ</span> ဖန်တီးပါ။</h1>
+<p>Movie နဲ့ Chinese Short Drama တွေအတွက် မြန်မာ Recap Script၊ AI Voice၊ Subtitle နဲ့ Video Export workflow ကို တစ်နေရာတည်းမှာ စီမံနိုင်မယ့် workspace။</p></section>
+<div class="grid">
+<section class="panel">
+<h2>🎬 Recap အသစ်ဖန်တီးမယ်</h2>
+<form id="recapForm">
+<div class="field"><label for="source">Video URL (သို့) Source ID</label><input id="source" type="url" placeholder="https://www.youtube.com/watch?v=..." required><div class="hint">ပထမဆုံးအဆင့်မှာ URL ကို လက်ခံပြီး backend ချိတ်ဆက်ရန် ပြင်ဆင်ထားပါတယ်။</div></div>
+<div class="field"><label>Recap အမျိုးအစား</label><div class="choices">
+<label class="choice"><input type="radio" name="kind" value="movie" checked><span>Hollywood / Movie</span></label>
+<label class="choice"><input type="radio" name="kind" value="chinese_drama"><span>Chinese Short Drama</span></label>
+</div></div>
+<div class="field"><label>မြန်မာ AI Voice</label><div class="choices">
+<label class="choice"><input type="radio" name="voice" value="male" checked><span>အမျိုးသား</span></label>
+<label class="choice"><input type="radio" name="voice" value="female"><span>အမျိုးသမီး</span></label>
+<label class="choice"><input type="radio" name="voice" value="choose"><span>နောက်မှရွေးမယ်</span></label>
+</div></div>
+<div class="field"><label>Video အရှည်</label><select id="duration"><option value="5">5 မိနစ်</option><option value="6">6 မိနစ်</option><option value="7" selected>7 မိနစ်</option><option value="8">8 မိနစ်</option><option value="9">9 မိနစ်</option><option value="10">10 မိနစ်</option></select></div>
+<div class="field"><label>Output</label><div class="choices">
+<label class="choice"><input type="checkbox" id="script" checked><span>မြန်မာ Script</span></label>
+<label class="choice"><input type="checkbox" id="subs" checked><span>မြန်မာ Subtitle</span></label>
+<label class="choice"><input type="checkbox" id="voiceout" checked><span>AI Voice</span></label>
+<label class="choice"><input type="checkbox" id="video" checked><span>MP4 Video</span></label>
+</div></div>
+<button type="submit" id="start">Recap စတင်ဖန်တီးမယ် →</button>
+</form>
+<div class="status" id="status" role="status"></div>
+<div class="notice">မှတ်ချက် — ဒီ UI သည် စတင်အသုံးပြုနိုင်သော frontend prototype ဖြစ်ပါတယ်။ တကယ့် URL မှ video ရယူခြင်း၊ transcription၊ မြန်မာ TTS နဲ့ MP4 rendering အတွက် backend နဲ့ API ချိတ်ဆက်ရန် လိုအပ်ပါသေးတယ်။ ကိုယ်ပိုင် သို့မဟုတ် အသုံးပြုခွင့်ရှိတဲ့ source များကိုသာ အသုံးပြုပါ။</div>
+</section>
+<aside class="panel">
+<h2>⚙️ အလုပ်လုပ်ပုံ</h2>
+<div class="steps">
+<div class="step"><div class="num">1</div><div><b>Source ထည့်မယ်</b><small>အသုံးပြုခွင့်ရှိတဲ့ video link သို့မဟုတ် upload file ကို ရွေးပါ။</small></div></div>
+<div class="step"><div class="num">2</div><div><b>အသံ / စာသား ခွဲထုတ်မယ်</b><small>Speech-to-text နဲ့ scene analysis ကို backend မှာ လုပ်ဆောင်မယ်။</small></div></div>
+<div class="step"><div class="num">3</div><div><b>မြန်မာ Recap ရေးမယ်</b><small>5–10 မိနစ်စာ ဇာတ်ကြောင်းကို သဘာဝကျတဲ့ မြန်မာစကားပြောပုံစံနဲ့ ဖန်တီးမယ်။</small></div></div>
+<div class="step"><div class="num">4</div><div><b>Voice + Subtitle</b><small>အမျိုးသား / အမျိုးသမီး အသံ၊ subtitle timing ထုတ်မယ်။</small></div></div>
+<div class="step"><div class="num">5</div><div><b>MP4 Export</b><small>Video၊ voice နဲ့ subtitle ကို ပေါင်းစပ်ပြီး export လုပ်မယ်။</small></div></div>
+</div>
+</aside></div>
+<footer>Nova Recap AI · Prototype UI · Your content, your workflow</footer>
+</main>
+<script>
+document.getElementById('recapForm').addEventListener('submit', async (e)=>{
+ e.preventDefault();
+ const payload={
+  source_url:document.getElementById('source').value,
+  kind:document.querySelector('input[name="kind"]:checked').value,
+  voice:document.querySelector('input[name="voice"]:checked').value,
+  duration_minutes:Number(document.getElementById('duration').value),
+  outputs:{script:document.getElementById('script').checked,subtitles:document.getElementById('subs').checked,voice:document.getElementById('voiceout').checked,video:document.getElementById('video').checked}
+ };
+ const box=document.getElementById('status'); box.style.display='block';
+ try{
+  const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(!r.ok) throw new Error('Backend မချိတ်ဆက်ရသေးပါ။');
+  const data=await r.json(); box.textContent='Job စတင်ပါပြီ။ Job ID: '+data.job_id;
+ }catch(err){box.textContent='Prototype အဆင့် — '+err.message+' UI နဲ့ ရွေးချယ်မှုတွေ အလုပ်လုပ်ပါတယ်။ Backend ချိတ်ဆက်ပြီးမှ တကယ့် processing စနိုင်ပါမယ်။';}
+});
+</script></body></html>
